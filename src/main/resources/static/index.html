@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World - Spring Boot</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Noto+Sans+SC:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0f0f23;
+            --bg-secondary: #1a1a2e;
+            --bg-card: #16213e;
+            --accent-cyan: #00d4ff;
+            --accent-magenta: #ff006e;
+            --accent-yellow: #ffd60a;
+            --accent-green: #00ff88;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --border-glow: rgba(0, 212, 255, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', 'JetBrains Mono', sans-serif;
+            background: var(--bg-primary);
+            min-height: 100vh;
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* 动态背景 */
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(0, 212, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(255, 0, 110, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(255, 214, 10, 0.05) 0%, transparent 60%);
+            z-index: -1;
+            animation: bgPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes bgPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* 网格背景 */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        /* 头部标题 */
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .title {
+            font-size: 4rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-magenta), var(--accent-yellow));
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease infinite;
+            margin-bottom: 16px;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .subtitle {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .subtitle span {
+            color: var(--accent-green);
+        }
+
+        /* 卡片样式 */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-magenta));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent-cyan);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-magenta));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        /* 按钮组 */
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+        }
+
+        .btn:active::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-cyan {
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            color: #000;
+        }
+
+        .btn-cyan:hover {
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-magenta {
+            background: linear-gradient(135deg, #ff006e, #cc0055);
+            color: #fff;
+        }
+
+        .btn-magenta:hover {
+            box-shadow: 0 8px 25px rgba(255, 0, 110, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-yellow {
+            background: linear-gradient(135deg, #ffd60a, #ccab08);
+            color: #000;
+        }
+
+        .btn-yellow:hover {
+            box-shadow: 0 8px 25px rgba(255, 214, 10, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-green {
+            background: linear-gradient(135deg, #00ff88, #00cc6a);
+            color: #000;
+        }
+
+        .btn-green:hover {
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .btn-outline:hover {
+            background: var(--accent-cyan);
+            color: #000;
+        }
+
+        /* 计数器显示 */
+        .counter-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .counter-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 4rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+            min-width: 120px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .counter-value.bump {
+            transform: scale(1.2);
+        }
+
+        /* 消息展示区 */
+        .message-box {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .message-box.success {
+            border-left: 4px solid var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .message-box.info {
+            border-left: 4px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .message-box.warning {
+            border-left: 4px solid var(--accent-yellow);
+            color: var(--accent-yellow);
+        }
+
+        .message-box.error {
+            border-left: 4px solid var(--accent-magenta);
+            color: var(--accent-magenta);
+        }
+
+        /* 时间显示 */
+        .time-display {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-top: 20px;
+            color: var(--accent-yellow);
+            text-shadow: 0 0 15px rgba(255, 214, 10, 0.3);
+        }
+
+        /* 颜色选择器区域 */
+        .color-picker-area {
+            display: flex;
+            gap: 16px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .color-box {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+
+        .color-box:hover {
+            transform: scale(1.1);
+        }
+
+        .color-box.selected {
+            border-color: #fff;
+            box-shadow: 0 0 20px currentColor;
+        }
+
+        #selectedColor {
+            font-family: 'JetBrains Mono', monospace;
+            padding: 10px 20px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            margin-top: 16px;
+            display: inline-block;
+        }
+
+        /* 进度条 */
+        .progress-container {
+            margin-top: 20px;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+            border-radius: 6px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-family: 'JetBrains Mono', monospace;
+            text-align: center;
+            margin-top: 10px;
+            color: var(--text-secondary);
+        }
+
+        /* 页脚 */
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 30px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* 动画入场 */
+        .fade-in {
+            animation: fadeIn 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+        .card:nth-child(5) { animation-delay: 0.5s; }
+
+        /* 响应式 */
+        @media (max-width: 600px) {
+            .title { font-size: 2.5rem; }
+            .btn { padding: 12px 20px; font-size: 0.85rem; }
+            .counter-value { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"></div>
+    <div class="grid-overlay"></div>
+
+    <div class="container">
+        <header class="header">
+            <h1 class="title">Hello World</h1>
+            <p class="subtitle">Powered by <span>Spring Boot</span> + <span>GraalVM</span></p>
+        </header>
+
+        <!-- 消息提示卡片 -->
+        <div class="card fade-in">
+            <h2 class="card-title">
+                <span class="card-icon">💬</span>
+                消息提示
+            </h2>
+            <div class="btn-group">
+                <button class="btn btn-green" onclick="showMessage('success', '✅ 操作成功！数据已保存。')">成功</button>
+                <button class="btn btn-cyan" onclick="showMessage('info', 'ℹ️ 提示：点击按钮查看效果。')">信息</button>
+                <button class="btn btn-yellow" onclick="showMessage('warning', '⚠️ 警告：请注意检查输入。')">警告</button>
+                <button class="btn btn-magenta" onclick="showMessage('error', '❌ 错误：连接超时，请重试。')">错误</button>
+            </div>
+            <div class="message-box" id="messageBox">点击上方按钮查看不同消息</div>
+        </div>
+
+        <!-- 计数器卡片 -->
+        <div class="card fade-in">
+            <h2 class="card-title">
+                <span class="card-icon">🔢</span>
+                计数器
+            </h2>
+            <div class="counter-display">
+                <button class="btn btn-magenta" onclick="updateCounter(-1)">−</button>
+                <span class="counter-value" id="counterValue">0</span>
+                <button class="btn btn-cyan" onclick="updateCounter(1)">+</button>
+            </div>
+            <div class="btn-group" style="justify-content: center; margin-top: 16px;">
+                <button class="btn btn-outline" onclick="resetCounter()">重置</button>
+                <button class="btn btn-yellow" onclick="randomCounter()">随机</button>
+            </div>
+        </div>
+
+        <!-- 实时时钟卡片 -->
+        <div class="card fade-in">
+            <h2 class="card-title">
+                <span class="card-icon">⏰</span>
+                实时时钟
+            </h2>
+            <div class="time-display" id="clockDisplay">00:00:00</div>
+            <div class="btn-group" style="justify-content: center; margin-top: 20px;">
+                <button class="btn btn-cyan" onclick="toggleClock()">启动/暂停</button>
+            </div>
+        </div>
+
+        <!-- 颜色选择器卡片 -->
+        <div class="card fade-in">
+            <h2 class="card-title">
+                <span class="card-icon">🎨</span>
+                颜色选择器
+            </h2>
+            <div class="color-picker-area" id="colorPicker">
+                <div class="color-box" style="background: #00d4ff;" data-color="#00d4ff"></div>
+                <div class="color-box" style="background: #ff006e;" data-color="#ff006e"></div>
+                <div class="color-box" style="background: #ffd60a;" data-color="#ffd60a"></div>
+                <div class="color-box" style="background: #00ff88;" data-color="#00ff88"></div>
+                <div class="color-box" style="background: #8b5cf6;" data-color="#8b5cf6"></div>
+                <div class="color-box" style="background: #f97316;" data-color="#f97316"></div>
+            </div>
+            <div id="selectedColor">选择一个颜色</div>
+        </div>
+
+        <!-- 进度条卡片 -->
+        <div class="card fade-in">
+            <h2 class="card-title">
+                <span class="card-icon">📊</span>
+                进度模拟
+            </h2>
+            <div class="btn-group">
+                <button class="btn btn-green" onclick="startProgress()">开始加载</button>
+                <button class="btn btn-outline" onclick="resetProgress()">重置</button>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">0%</div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>🚀 Built with Spring Boot 4.0 | Running on GraalVM Native Image</p>
+            <p style="margin-top: 8px;">Hello from <a href="#">test-graalvm</a> application</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

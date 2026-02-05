@@ -1,0 +1,32 @@
+[
+  {
+    "downcall": {
+      "type": "(long,long)long"
+    }
+  },
+  {
+    "downcall": {
+      "type": "(long)long"
+    }
+  },
+  {
+    "downcall": {
+      "type": "(long)void"
+    }
+  },
+  {
+    "downcall": {
+      "type": "(long,long)void"
+    }
+  },
+  {
+    "downcall": {
+      "type": "()long"
+    }
+  },
+  {
+    "downcall": {
+      "type": "(long,long,long)long"
+    }
+  }
+]

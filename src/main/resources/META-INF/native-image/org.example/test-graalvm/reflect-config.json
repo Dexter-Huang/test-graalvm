@@ -1,0 +1,20 @@
+[
+  {
+    "name": "org.example.testgraalvm.panama.Mtef2LatexDTO",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.example.testgraalvm.panama.MathType2LatexLib",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.example.testgraalvm.panama.MathTypeToLatexUtil",
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  }
+]

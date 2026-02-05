@@ -1,0 +1,56 @@
+{
+  "reflection": [
+    {
+      "type": "org.example.testgraalvm.panama.Mtef2LatexDTO",
+      "allDeclaredFields": true,
+      "allDeclaredMethods": true,
+      "allDeclaredConstructors": true
+    },
+    {
+      "type": "org.example.testgraalvm.panama.MathType2LatexLib",
+      "allDeclaredFields": true,
+      "allDeclaredMethods": true,
+      "allDeclaredConstructors": true
+    },
+    {
+      "type": "org.example.testgraalvm.panama.MathTypeToLatexUtil",
+      "allDeclaredFields": true,
+      "allDeclaredMethods": true,
+      "allDeclaredConstructors": true
+    }
+  ],
+  "resources": {
+    "includes": [
+      {"pattern": "bin/.*"},
+      {"pattern": "static/.*"}
+    ]
+  },
+  "foreign": {
+    "downcalls": [
+      {
+        "type": "(long,long)long"
+      },
+      {
+        "type": "(long)long"
+      },
+      {
+        "type": "(long)void"
+      },
+      {
+        "type": "(long,long)void"
+      },
+      {
+        "type": "()long"
+      },
+      {
+        "type": "(long,long,long)long"
+      },
+      {
+        "type": "(long,int)long"
+      },
+      {
+        "type": "(long,int,long)long"
+      }
+    ]
+  }
+}
